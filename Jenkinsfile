@@ -25,5 +25,18 @@ pipeline {
         archiveArtifacts 'target/*.war'        
       }
     }
+    stage ('Publish'){
+      def server = Artifactory.server 'Default Artifactory Server'
+      def uploadSpec = """{
+        "files": [
+          {
+            "pattern": "target/petclinic.war",
+            "target": "petclinic-project/${BUILD_NUMBER}/",
+            "props": "Integration-Tested=Yes;Performance-Tested=No"
+          }
+        ]
+      }"""
+      server.upload(uploadSpec)
+    }    
   }
 }
