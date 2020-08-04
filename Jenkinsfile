@@ -13,7 +13,7 @@ pipeline {
     }
     stage('Static Code Analysis'){
       steps {
-        withSonarQubeEnv() {
+        withSonarQubeEnv('sonarqube') {
           sh 'mvn clean verify sonar:sonar -Dsonar.projectName=petclinic-project -Dsonar.projectKey=petclinic-project -Dsonar.projectVersion=$BUILD_NUMBER';
         }
       }
