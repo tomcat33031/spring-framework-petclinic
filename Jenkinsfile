@@ -27,17 +27,18 @@ pipeline {
     }
     stage ('Publish'){
       steps {
-        def server = Artifactory.server 'Default Artifactory Server'
-        def uploadSpec = """{
-          "files": [
-            {
-              "pattern": "target/petclinic.war",
-              "target": "petclinic-project/${BUILD_NUMBER}/",
-              "props": "Integration-Tested=Yes;Performance-Tested=No"
-            }
-          ]
-        }"""
-        server.upload(uploadSpec)        
+        rtUpload(
+          serverId: 'Artifactory Server',
+          spec: """{
+            "files": [
+              {
+                "pattern": "target/petclinic.war",
+                "target": "petclinic-project/${BUILD_NUMBER}/",
+                "props": "Integration-Tested=Yes;Performance-Tested=No"
+              }
+            ]
+          }"""
+        )
       }
     }    
   }
